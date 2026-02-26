@@ -1,833 +1,844 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adequate Success Online College · result portal</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    body {
-      background: #f4f7fc;
-      display: flex;
-      justify-content: center;
-      padding: 2rem 1rem;
-    }
-
-    .college-container {
-      max-width: 1400px;
-      width: 100%;
-    }
-
-    /* branding */
-    .college-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-    }
-
-    .brand h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #0b2b4f, #1f4b7a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.02em;
-    }
-
-    .brand .tagline {
-      color: #2c3e50;
-      font-size: 1rem;
-      border-left: 4px solid #2a7faa;
-      padding-left: 1rem;
-      margin-top: 0.2rem;
-    }
-
-    .portal-tabs {
-      display: flex;
-      gap: 0.5rem;
-      background: white;
-      padding: 0.5rem;
-      border-radius: 60px;
-      box-shadow: 0 5px 15px rgba(0,30,60,0.05);
-      border: 1px solid #cbd6e4;
-    }
-
-    .tab-btn {
-      border: none;
-      background: transparent;
-      padding: 0.7rem 2rem;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.15s;
-      color: #1e3a5f;
-    }
-
-    .tab-btn.active {
-      background: #1f4b7a;
-      color: white;
-      box-shadow: 0 3px 8px rgba(0,60,120,0.25);
-    }
-
-    /* portal visibility */
-    .portal {
-      display: none;
-    }
-
-    .portal.active {
-      display: block;
-    }
-
-    /* admin grid */
-    .admin-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 1.8rem;
-      align-items: start;
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 28px;
-      padding: 1.8rem 2rem;
-      box-shadow: 0 12px 30px rgba(0, 20, 40, 0.06);
-      border: 1px solid #dee8f2;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-
-    .card-header h2 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #0c2b44;
-    }
-
-    .badge {
-      background: #e1ebf7;
-      color: #1f4b7a;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 0.3rem 1rem;
-      border-radius: 30px;
-    }
-
-    .input-field {
-      margin-bottom: 1.3rem;
-    }
-
-    .input-field label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: #1f4a6e;
-      margin-bottom: 0.3rem;
-    }
-
-    .input-field input,
-    .input-field textarea {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid #d7e2ed;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      background: #f9fcff;
-    }
-
-    .input-field input:focus,
-    .input-field textarea:focus {
-      outline: none;
-      border-color: #2a7faa;
-      box-shadow: 0 0 0 3px rgba(42,127,170,0.15);
-    }
-
-    .subjects-panel {
-      background: #f3f8ff;
-      border-radius: 22px;
-      padding: 1.2rem 1.2rem;
-      margin: 1.2rem 0 0.8rem;
-      border: 1px dashed #9bb6d0;
-    }
-
-    .subject-row {
-      display: flex;
-      gap: 0.6rem;
-      margin-bottom: 0.8rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .subject-row input {
-      flex: 2 1 120px;
-      border-radius: 30px;
-      border: 1.5px solid #d0deed;
-      background: white;
-      padding: 0.6rem 0.8rem;
-    }
-
-    .subject-row input:nth-child(2) { flex: 1 1 80px; } /* grade */
-    .subject-row input:nth-child(3) { flex: 3 1 160px; } /* comment */
-
-    .remove-subject {
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #7a8ea8;
-      padding: 0.2rem 0.5rem;
-      border-radius: 30px;
-    }
-
-    .remove-subject:hover {
-      background: #ffebee;
-      color: #b52b2b;
-    }
-
-    .btn-add-subject {
-      background: white;
-      border: 1.5px dashed #2a7faa;
-      color: #1f4b7a;
-      font-weight: 500;
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .btn-add-subject:hover {
-      background: #e1f0fa;
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.8rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: #1f4b7a;
-      border: none;
-      padding: 0.8rem 2rem;
-      border-radius: 40px;
-      font-weight: 600;
-      color: white;
-      font-size: 0.95rem;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,60,120,0.2);
-      flex: 1 1 auto;
-    }
-
-    .btn-primary:hover {
-      background: #2a5f94;
-    }
-
-    .btn-secondary {
-      background: #ecf3fa;
-      border: 1px solid #b6cde0;
-      padding: 0.8rem 1.5rem;
-      border-radius: 40px;
-      font-weight: 500;
-      color: #1e3a5f;
-      cursor: pointer;
-    }
-
-    .btn-secondary:hover {
-      background: #dde9f5;
-    }
-
-    /* student list (admin) */
-    .student-list {
-      max-height: 520px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .student-item {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 0.8rem;
-      border: 1px solid #e2ecf5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .student-item:hover {
-      background: #f5faff;
-      border-color: #a0c2df;
-    }
-
-    .student-info h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #0f2b44;
-    }
-
-    .student-info .meta {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.85rem;
-      color: #3f5f80;
-    }
-
-    .student-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .icon-btn {
-      background: none;
-      border: none;
-      font-size: 1.1rem;
-      padding: 0.4rem 0.6rem;
-      border-radius: 30px;
-      cursor: pointer;
-      color: #3f5f80;
-    }
-
-    .icon-btn:hover {
-      background: #deeaf5;
-      color: #1f4b7a;
-    }
-
-    .icon-btn.delete:hover {
-      background: #ffdad7;
-      color: #b52b2b;
-    }
-
-    /* report card (shared) */
-    .report-card {
-      margin-top: 1.8rem;
-      background: #ffffff;
-      border-radius: 30px;
-      padding: 2rem 2.2rem;
-      border: 1px solid #c9dcee;
-      box-shadow: 0 8px 20px rgba(0,30,70,0.05);
-    }
-
-    .report-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #dce8f2;
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .report-header h2 {
-      font-weight: 600;
-      color: #0e2d4b;
-    }
-
-    .student-badge {
-      background: #d6e6f5;
-      padding: 0.4rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 500;
-    }
-
-    .subjects-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-    }
-
-    .subjects-table th {
-      text-align: left;
-      font-weight: 600;
-      color: #1d4a72;
-      font-size: 0.9rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #bdd2e8;
-    }
-
-    .subjects-table td {
-      padding: 0.6rem 0;
-      border-bottom: 1px dashed #d6e2f0;
-    }
-
-    .teacher-comment {
-      background: #e9f2fb;
-      border-radius: 22px;
-      padding: 1rem 1.5rem;
-      margin-top: 1rem;
-      font-style: italic;
-      color: #1e3f60;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: #7089a8;
-      padding: 2rem;
-      font-style: italic;
-    }
-
-    /* student portal */
-    .student-selector {
-      margin-bottom: 2rem;
-    }
-
-    .student-selector label {
-      font-weight: 600;
-      color: #1f4b7a;
-      margin-right: 1rem;
-    }
-
-    .student-selector select {
-      padding: 0.8rem 1.8rem;
-      border-radius: 40px;
-      border: 1.5px solid #c1d6ec;
-      background: white;
-      min-width: 280px;
-      font-size: 1rem;
-    }
-
-    .student-portal-report {
-      background: #ffffff;
-      border-radius: 28px;
-      padding: 2rem;
-      border: 1px solid #cddef0;
-    }
-
-    /* helper */
-    .text-center {
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adequate Success Online College – affordable, faith‑based, accredited online education. Explore courses, tuition, and enroll today.">
+    <title>Adequate Success Online College</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; }
+        body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; background: #f4f6f9; line-height: 1.6; }
+        header { background: #0a2a43; color: white; padding: 1rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        header h1 { font-size: 1.8rem; margin: 0.2rem 0; }
+        nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; }
+        nav a { color: white; text-decoration: none; font-weight: 600; cursor: pointer; padding: 0.3rem 0; border-bottom: 2px solid transparent; transition: 0.2s; }
+        nav a:hover { border-bottom-color: #ff9800; }
+        section { display: none; padding: 2.5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .hero { background: linear-gradient(145deg, #0a2a43, #145374); color: white; padding: 4rem 2rem; text-align: center; border-radius: 0 0 20px 20px; margin-bottom: 2rem; }
+        .hero h2 { font-size: 2.8rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto; }
+        .button, button.button { background: #ff9800; color: white; padding: 12px 28px; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.2s; margin: 5px 0; border: 1px solid transparent; }
+        .button:hover { background: #e68900; transform: scale(1.02); }
+        .button.small { padding: 6px 15px; font-size: 0.9rem; }
+        .button.danger { background: #c0392b; }
+        .button.danger:hover { background: #a93226; }
+        .button.secondary { background: #2c3e50; }
+        .button.secondary:hover { background: #1e2b37; }
+        input, select, textarea { padding: 12px; margin: 10px 0; width: 100%; max-width: 450px; border: 1px solid #ccc; border-radius: 30px; font-size: 1rem; outline: none; }
+        input:focus, select:focus { border-color: #0a2a43; box-shadow: 0 0 0 3px rgba(10,42,67,0.2); }
+        .card { background: white; padding: 25px; margin: 25px 0; border-radius: 24px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .grid-2, .grid-3 { display: grid; gap: 2rem; margin-top: 2rem; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); }
+        .course-card { background: #f9fcff; padding: 1.8rem; border-radius: 20px; border-left: 8px solid #0a2a43; box-shadow: 0 8px 18px rgba(0,0,0,0.05); }
+        .course-card h3 { color: #0a2a43; margin-bottom: 0.5rem; }
+        table { border-collapse: collapse; width: 100%; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+        th { background: #0a2a43; color: white; padding: 15px 10px; font-weight: 600; }
+        td, th { border: none; padding: 14px 12px; text-align: left; border-bottom: 1px solid #e0e6ed; }
+        tr:last-child td { border-bottom: none; }
+        .badge { background: #ff9800; color: #0a2a43; padding: 5px 15px; border-radius: 40px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        footer { background: #0a2a43; color: white; text-align: center; padding: 2rem; font-size: 0.95rem; }
+        footer a { color: #ffb04d; text-decoration: none; }
+        .message { font-weight: 600; margin: 10px 0; color: #b85c00; }
+        .success-msg { color: #1e7e34; }
+        hr { border: 1px solid #ddd; margin: 2rem 0; }
+        .contact-info p { margin: 0.5rem 0; }
+        .social-links a { color: white; margin: 0 10px; font-size: 1.5rem; text-decoration: none; }
+        .admin-subsection { background: #f0f4fa; padding: 20px; border-radius: 20px; margin: 30px 0 10px; }
+        .course-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 20px; margin: 8px 0; border-radius: 40px; }
+        .hidden { display: none; }
+        #contactSuccess { background: #d4edda; color: #155724; padding: 15px; border-radius: 50px; margin-top: 15px; text-align: center; }
+        .small-input { width: 80px; display: inline-block; margin-right: 8px; }
+        .action-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+        .export-btn { margin-bottom: 15px; }
+        .courseware-list { list-style: none; padding: 0; }
+        .courseware-list li { background: #f9f9f9; margin: 8px 0; padding: 12px 18px; border-radius: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .courseware-list a { text-decoration: none; color: #0a2a43; font-weight: 500; }
+        .courseware-list a:hover { text-decoration: underline; }
+        .payment-details { background: #e8f0fe; padding: 20px; border-radius: 24px; border: 2px dashed #0a2a43; margin: 25px 0; }
+        .payment-details h3 { color: #0a2a43; margin-top: 0; }
+        .payment-details .account-number { font-size: 2rem; font-weight: bold; color: #c0392b; letter-spacing: 2px; }
+        /* Passport photo styles */
+        .passport-container { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+        .passport-image { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #0a2a43; background: #ddd; }
+        .passport-placeholder { width: 120px; height: 120px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.9rem; border: 4px solid #0a2a43; }
+        .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; }
+        .upload-btn-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .thumbnail { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #0a2a43; }
+        @media (max-width: 700px) { header { flex-direction: column; } nav { justify-content: center; margin-top: 0.8rem; } }
+    </style>
 </head>
 <body>
-<div class="college-container">
-  <!-- header with college name and tabs -->
-  <div class="college-header">
-    <div class="brand">
-      <h1>🎓 Adequate Success Online College</h1>
-      <div class="tagline">empower your future · result management system</div>
+
+<header>
+    <h1>Adequate Success Online College</h1>
+    <nav>
+        <a onclick="showSection('home')">Home</a>
+        <a onclick="showSection('about')">About</a>
+        <a onclick="showSection('courses')">Courses</a>
+        <a onclick="showSection('tuition')">Tuition</a>
+        <a onclick="showSection('contact')">Contact</a>
+        <a onclick="showSection('signup')">Sign Up</a>
+        <a onclick="showSection('studentLogin')">Student Login</a>
+        <a onclick="showSection('adminLogin')">Admin Login</a>
+    </nav>
+</header>
+
+<!-- ========== PUBLIC INFO SECTIONS ========== -->
+<section id="home" style="display:block;">
+    <div class="hero">
+        <h2>Empowering Lives Through Faith & Education</h2>
+        <p>Accredited online programs · Flexible schedules · Rooted in values</p>
+        <button class="button" onclick="showSection('courses')" style="margin-top:25px;">Explore Programs</button>
     </div>
-    <div class="portal-tabs">
-      <button class="tab-btn active" id="tabAdmin">👨‍🏫 Admin portal</button>
-      <button class="tab-btn" id="tabStudent">🧑‍🎓 Student portal</button>
+    <div class="grid-2" style="margin-top:2rem;">
+        <div class="card"><h3>🎓 Why Choose Us?</h3><p>Since 2010, we’ve helped over 5,000 students achieve their goals with affordable, Christ‑centered online education. Small classes, dedicated mentors.</p></div>
+        <div class="card"><h3>⏳ Flexible Learning</h3><p>100% online, self‑paced courses with weekly live sessions. Balance work, family, and studies.</p></div>
+        <div class="card"><h3>📜 Accreditation</h3><p>Recognized by the Distance Education Accrediting Commission (DEAC). Transfer credits accepted.</p></div>
+        <div class="card"><h3>🙏 Faith Integration</h3><p>All programs include optional courses in ethics, leadership, and service learning.</p></div>
     </div>
-  </div>
+</section>
 
-  <!-- ADMIN PORTAL -->
-  <div id="adminPortal" class="portal active">
-    <div class="admin-grid">
-      <!-- left: student form -->
-      <div class="card">
-        <div class="card-header">
-          <h2 id="formTitle">➕ register new student</h2>
-          <span class="badge" id="formModeBadge">admin</span>
+<section id="about">
+    <h2>About Adequate Success</h2>
+    <div class="card">
+        <p style="font-size:1.2rem;">Founded in 2010, Adequate Success Online College exists to provide accessible, values‑driven higher education to students from all walks of life. We blend academic rigor with spiritual growth, preparing graduates for both career and purpose.</p>
+        <hr>
+        <h3>Mission & Vision</h3>
+        <p><strong>Mission:</strong> To equip learners with skills, integrity, and hope through flexible online programs rooted in excellence and faith.</p>
+        <p><strong>Vision:</strong> A world where quality education is within everyone's reach, fostering community and transformation.</p>
+        <hr>
+        <h3>Our Faculty</h3>
+        <div class="grid-3">
+            <div><strong>Dr. Sarah Benson</strong> — Theology & Ethics (PhD, Notre Dame)</div>
+            <div><strong>Prof. Mark Chen</strong> — Business & Leadership (MBA, Wharton)</div>
+            <div><strong>Dr. Lisa Ray</strong> — Education & Psychology (EdD, Columbia)</div>
+            <div><strong>Rev. James Carter</strong> — Pastoral Studies (MDiv, Fuller)</div>
+            <div><strong>Dr. Amina Yusuf</strong> — Computer Science (PhD, MIT)</div>
         </div>
-        <form id="studentForm">
-          <div class="input-field">
-            <label>full name</label>
-            <input type="text" id="studentName" placeholder="e.g. Jessica Mbeki" required>
-          </div>
-          <div class="input-field">
-            <label>programme / class</label>
-            <input type="text" id="studentClass" placeholder="e.g. BSc CS Year 2" required>
-          </div>
-          <div class="input-field">
-            <label>📝 overall comment (optional)</label>
-            <textarea id="teacherComments" rows="2" placeholder="Academic progress, remarks ..."></textarea>
-          </div>
+    </div>
+</section>
 
-          <div class="subjects-panel">
-            <label style="font-weight:600; font-size:0.9rem; margin-bottom:8px; display:block;">📚 modules (subject, grade, comment)</label>
-            <div id="subjectsContainer"></div>
-            <button type="button" class="btn-add-subject" id="addSubjectBtn">+ add module</button>
-          </div>
+<section id="courses">
+    <h2>Undergraduate & Graduate Programs</h2>
+    <div class="grid-3" id="publicCoursesContainer">
+        <!-- dynamically populated from db.courses later -->
+    </div>
+</section>
 
-          <div class="form-actions">
-            <button type="submit" class="btn-primary" id="saveBtn">💾 save student</button>
-            <button type="button" class="btn-secondary" id="cancelEditBtn">cancel</button>
-          </div>
-          <input type="hidden" id="editingId" value="">
-        </form>
-      </div>
-
-      <!-- right: student directory -->
-      <div class="card">
-        <div class="card-header">
-          <h2>📋 enrolled students</h2>
-          <span class="badge" id="studentCount">0</span>
-        </div>
-        <div class="student-list" id="studentListContainer">
-          <div class="empty-state">— no records yet, add a student —</div>
-        </div>
-      </div>
+<!-- ========== TUITION with OPAY PAYMENT DETAILS ========== -->
+<section id="tuition">
+    <h2>Affordable Tuition & Financial Aid</h2>
+    <div class="card">
+        <table>
+            <tr><th>Program</th><th>Cost per credit</th><th>Estimated total</th></tr>
+            <tr><td>Associate / Bachelor's</td><td>$350</td><td>$21,000 (BA, 120cr)</td></tr>
+            <tr><td>Master's programs</td><td>$495</td><td>$17,820 (MA, 36cr)</td></tr>
+            <tr><td>Certificates</td><td>$300</td><td>$5,400 (18cr)</td></tr>
+            <tr><td colspan="3"><small>* Textbook fees ~$200/course. Military & ministry discounts available.</small></td></tr>
+        </table>
+        <p style="margin-top:30px;">📌 80% of students receive grants or scholarships. FAFSA code: 012345. Monthly payment plans.</p>
+        <button class="button" onclick="showSection('contact')">Ask about financial aid</button>
     </div>
 
-    <!-- admin result preview -->
-    <div class="report-card" id="adminReportCard">
-      <div class="report-header">
-        <h2>📄 transcript preview</h2>
-        <span class="student-badge" id="reportStudentName">select a student</span>
-      </div>
-      <div id="reportContent">
-        <p style="color:#5f7a9a;">👆 click the 📄 icon next to a student</p>
-      </div>
+    <!-- OPAY PAYMENT ACCOUNT (NIGERIA) with account name -->
+    <div class="payment-details">
+        <h3>💳 Make Payment via Opay</h3>
+        <p>Send your tuition or fees directly to our official Opay account:</p>
+        <div style="background: white; padding: 20px; border-radius: 20px; text-align: center;">
+            <p style="font-size: 1.2rem; margin-bottom: 5px;">Opay Account Number</p>
+            <div class="account-number">8034212065</div>
+            <p style="margin-top: 10px;"><strong>Account Name:</strong> Adebowale Segun Solomon</p>
+            <p><strong>Bank:</strong> Opay Digital Services</p>
+        </div>
+        <p style="margin-top: 15px;">After payment, please email your receipt to <strong>finance@adeqsuccess.edu</strong> with your full name and student ID (if available).</p>
     </div>
-  </div>
+</section>
 
-  <!-- STUDENT PORTAL -->
-  <div id="studentPortal" class="portal">
-    <div class="card" style="padding:2rem;">
-      <div class="card-header">
-        <h2>🧑‍🎓 student result viewer</h2>
-        <span class="badge">read only</span>
-      </div>
-      <div class="student-selector">
-        <label for="studentSelect">Select your name:</label>
-        <select id="studentSelect">
-          <option value="">— choose —</option>
-        </select>
-      </div>
-
-      <div class="student-portal-report" id="studentReportCard">
-        <div class="report-header" style="border-bottom: none; padding-bottom:0;">
-          <h3>📋 your transcript</h3>
+<!-- ========== CONTACT with NETLIFY FORM ========== -->
+<section id="contact">
+    <h2>Get in Touch</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div class="card">
+            <h3>📬 Contact info</h3>
+            <p>📍Ekiti<br>Nigeria</p>
+            <p>📞 (234) 8034212065 (Mon–Fri, 9am–7pm ET)</p>
+            <p>📧 admissions@ http://adeqsuccess.edu.netlify.app</p>
+            <p>🌐 social: @AdequateSuccess (LinkedIn, Twitter)</p>
         </div>
-        <div id="studentReportContent">
-          <p class="empty-state" style="padding:1rem;">👆 select your name to view results</p>
+        <div class="card">
+            <h3>✉️ Send us a message</h3>
+            <!-- Netlify form: detected automatically, submitted via AJAX -->
+            <form id="netlifyContact" data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST">
+                <input type="hidden" name="form-name" value="contact" />
+                <p class="hidden">
+                    <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                </p>
+                <input type="text" name="name" id="contactName" placeholder="Your name" required />
+                <input type="email" name="email" id="contactEmail" placeholder="Email address" required />
+                <textarea name="message" id="contactMsg" rows="4" placeholder="Your question / message" required style="border-radius:20px;"></textarea>
+                <button type="submit" class="button" id="contactSubmit">Send Message</button>
+            </form>
+            <div id="contactSuccess" class="hidden">✅ Thank you! We’ll reply within 2 business days.</div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
+</section>
 
-<!-- FIREPROOF + APP SCRIPT -->
-<script type="module">
-  import { fireproof } from 'https://esm.sh/fireproof@5.0.0?bundle';
+<!-- ========== AUTH & DASHBOARDS ========== -->
+<section id="signup">
+    <h2>Student Sign Up (Full Details)</h2>
+    <input id="suFullName" placeholder="Full Name" required>
+    <input id="suEmail" type="email" placeholder="Email Address" required>
+    <input id="suPhone" placeholder="Phone Number (optional)">
+    <input id="suUser" placeholder="Username" required>
+    <input id="suPass" type="password" placeholder="Password" required>
+    <button class="button" onclick="signup()">Create Account</button>
+    <p id="suMsg" class="message"></p>
+</section>
 
-  // --- init fireproof database ---
-  const db = fireproof('adequateSuccessCollegeDB');
+<section id="studentLogin">
+    <h2>Student Login</h2>
+    <input id="stuUser" placeholder="Username">
+    <input id="stuPass" type="password" placeholder="Password">
+    <button class="button" onclick="loginStudent()">Login</button>
+    <p id="stuMsg" class="message"></p>
+</section>
 
-  // --- DOM elements (admin) ---
-  const studentNameInp = document.getElementById('studentName');
-  const studentClassInp = document.getElementById('studentClass');
-  const teacherCommentsInp = document.getElementById('teacherComments');
-  const subjectsContainer = document.getElementById('subjectsContainer');
-  const addSubjectBtn = document.getElementById('addSubjectBtn');
-  const studentForm = document.getElementById('studentForm');
-  const editingIdHidden = document.getElementById('editingId');
-  const saveBtn = document.getElementById('saveBtn');
-  const cancelEditBtn = document.getElementById('cancelEditBtn');
-  const studentListDiv = document.getElementById('studentListContainer');
-  const studentCountSpan = document.getElementById('studentCount');
-  const formTitle = document.getElementById('formTitle');
-  const formModeBadge = document.getElementById('formModeBadge');
-  const reportStudentNameSpan = document.getElementById('reportStudentName');
-  const reportContentDiv = document.getElementById('reportContent');
+<section id="adminLogin">
+    <h2>Admin Login</h2>
+    <input id="adUser" placeholder="Admin Username">
+    <input id="adPass" type="password" placeholder="Password">
+    <button class="button" onclick="loginAdmin()">Login</button>
+    <p id="adMsg" class="message"></p>
+</section>
 
-  // student portal
-  const studentSelect = document.getElementById('studentSelect');
-  const studentReportContent = document.getElementById('studentReportContent');
+<section id="studentDashboard">
+    <h2>Student Dashboard</h2>
+    <div id="studentContent"></div>
+    <button class="button" onclick="logout()">Logout</button>
+</section>
 
-  // tabs
-  const tabAdmin = document.getElementById('tabAdmin');
-  const tabStudent = document.getElementById('tabStudent');
-  const adminPortal = document.getElementById('adminPortal');
-  const studentPortal = document.getElementById('studentPortal');
+<section id="adminDashboard">
+    <h2>Admin Portal</h2>
+    <div id="adminContent"></div>
+    <button class="button" onclick="logout()">Logout</button>
+</section>
 
-  // --- state ---
-  let students = [];
+<footer>
+    <p>© 2026 Adequate Success Online College — Accredited by DEAC | All faiths welcome</p>
+    <p><a href="#" onclick="showSection('about')">About</a> | <a href="#" onclick="showSection('contact')">Contact</a> | <a href="#">Privacy</a></p>
+    <div class="social-links">🔵 🐦 📘</div>
+</footer>
 
-  // --- helper: subject row ---
-  function createSubjectRow(subject = '', grade = '', comment = '') {
-    const div = document.createElement('div');
-    div.className = 'subject-row';
-    const inpSubj = document.createElement('input');
-    inpSubj.type = 'text';
-    inpSubj.placeholder = 'module';
-    inpSubj.value = subject;
-    inpSubj.required = true;
-    const inpGrade = document.createElement('input');
-    inpGrade.type = 'text';
-    inpGrade.placeholder = 'grade';
-    inpGrade.value = grade;
-    inpGrade.required = true;
-    const inpComm = document.createElement('input');
-    inpComm.type = 'text';
-    inpComm.placeholder = 'comment (optional)';
-    inpComm.value = comment;
-    const rmBtn = document.createElement('button');
-    rmBtn.type = 'button';
-    rmBtn.className = 'remove-subject';
-    rmBtn.innerHTML = '✕';
-    rmBtn.addEventListener('click', () => div.remove());
-    div.append(inpSubj, inpGrade, inpComm, rmBtn);
-    return div;
-  }
-
-  function resetSubjectRows() {
-    subjectsContainer.innerHTML = '';
-    subjectsContainer.appendChild(createSubjectRow('', '', ''));
-  }
-
-  function loadSubjectsIntoForm(subjectsArray) {
-    subjectsContainer.innerHTML = '';
-    if (!subjectsArray || subjectsArray.length === 0) {
-      subjectsContainer.appendChild(createSubjectRow('', '', ''));
-      return;
-    }
-    subjectsArray.forEach(s => {
-      subjectsContainer.appendChild(createSubjectRow(s.subject, s.grade, s.comment || ''));
-    });
-  }
-
-  function resetForm() {
-    studentNameInp.value = '';
-    studentClassInp.value = '';
-    teacherCommentsInp.value = '';
-    resetSubjectRows();
-    editingIdHidden.value = '';
-    saveBtn.textContent = '💾 save student';
-    formTitle.innerText = '➕ register new student';
-    formModeBadge.innerText = 'admin';
-  }
-
-  function populateFormForEdit(s) {
-    studentNameInp.value = s.name || '';
-    studentClassInp.value = s.class || '';
-    teacherCommentsInp.value = s.teacherComments || '';
-    loadSubjectsIntoForm(s.subjects || []);
-    editingIdHidden.value = s._id;
-    saveBtn.textContent = '🔄 update student';
-    formTitle.innerText = '✏️ editing student';
-    formModeBadge.innerText = 'edit';
-  }
-
-  // --- load from fireproof ---
-  async function loadStudents() {
-    try {
-      const res = await db.allDocs();
-      students = res.rows.map(r => r.doc).filter(d => d && d.type === 'student');
-      renderStudentList();
-      populateStudentDropdown();
-    } catch (e) {
-      console.warn(e);
-    }
-  }
-
-  function escapeHtml(unsafe) {
-    return unsafe.replace(/[&<>"]/g, m => {
-      if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
-      return m;
-    });
-  }
-
-  function renderStudentList() {
-    if (!students.length) {
-      studentListDiv.innerHTML = `<div class="empty-state">📭 no students registered</div>`;
-      studentCountSpan.innerText = '0';
-      return;
-    }
-    let html = '';
-    students.sort((a,b) => (a.name||'').localeCompare(b.name||''));
-    students.forEach(s => {
-      const subjCount = s.subjects ? s.subjects.length : 0;
-      html += `
-        <div class="student-item" data-id="${s._id}">
-          <div class="student-info">
-            <h3>${escapeHtml(s.name || '')}</h3>
-            <div class="meta"><span>📘 ${escapeHtml(s.class || '')}</span><span>📚 ${subjCount} modules</span></div>
-          </div>
-          <div class="student-actions">
-            <button class="icon-btn report-btn" title="view transcript" data-id="${s._id}">📄</button>
-            <button class="icon-btn edit-btn" title="edit" data-id="${s._id}">✏️</button>
-            <button class="icon-btn delete" title="delete" data-id="${s._id}">🗑️</button>
-          </div>
-        </div>
-      `;
-    });
-    studentListDiv.innerHTML = html;
-    studentCountSpan.innerText = students.length;
-
-    document.querySelectorAll('.report-btn').forEach(b => b.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = b.dataset.id;
-      const s = students.find(s => s._id === id);
-      if (s) showReport(s);
-    }));
-    document.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = b.dataset.id;
-      const s = students.find(s => s._id === id);
-      if (s) populateFormForEdit(s);
-    }));
-    document.querySelectorAll('.delete').forEach(b => b.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const id = b.dataset.id;
-      if (confirm('Delete this student record?')) {
-        await db.del(id);
-        await loadStudents();
-        if (reportStudentNameSpan.innerText.includes('select')) { /* clear preview */ }
-      }
-    }));
-  }
-
-  function showReport(s) {
-    reportStudentNameSpan.innerText = `${s.name} · ${s.class}`;
-    let subjHtml = '';
-    if (s.subjects && s.subjects.length) {
-      subjHtml = '<table class="subjects-table"><tr><th>Module</th><th>Grade</th><th>Comment</th></tr>';
-      s.subjects.forEach(sub => {
-        subjHtml += `<tr><td>${escapeHtml(sub.subject)}</td><td><strong>${escapeHtml(sub.grade)}</strong></td><td>${escapeHtml(sub.comment || '—')}</td></tr>`;
-      });
-      subjHtml += '</table>';
-    } else {
-      subjHtml = '<p style="color:#6b85a4;">no modules entered</p>';
-    }
-    const comm = s.teacherComments 
-      ? `<div class="teacher-comment">📌 overall: “${escapeHtml(s.teacherComments)}”</div>` 
-      : '<div class="teacher-comment">ℹ️ no overall comment</div>';
-    reportContentDiv.innerHTML = `<div>${subjHtml}</div>${comm}`;
-  }
-
-  // student portal dropdown
-  function populateStudentDropdown() {
-    let opts = '<option value="">— select your name —</option>';
-    if (students.length === 0) {
-      opts = '<option value="">— no students available —</option>';
-    } else {
-      students.sort((a,b) => (a.name||'').localeCompare(b.name||'')).forEach(s => {
-        opts += `<option value="${s._id}">${escapeHtml(s.name)} (${escapeHtml(s.class)})</option>`;
-      });
-    }
-    studentSelect.innerHTML = opts;
-    // if no students, show message in report area
-    if (students.length === 0) {
-      studentReportContent.innerHTML = '<p class="empty-state" style="padding:1rem;">🚫 No student records yet. Please contact admin.</p>';
-    } else {
-      studentReportContent.innerHTML = '<p class="empty-state" style="padding:1rem;">👆 select your name</p>';
-    }
-  }
-
-  function showStudentReport(id) {
-    if (!id || students.length === 0) {
-      studentReportContent.innerHTML = '<p class="empty-state" style="padding:1rem;">👆 select a valid name</p>';
-      return;
-    }
-    const s = students.find(s => s._id === id);
-    if (!s) return;
-    let subjHtml = '';
-    if (s.subjects && s.subjects.length) {
-      subjHtml = '<table class="subjects-table"><tr><th>Module</th><th>Grade</th><th>Comment</th></tr>';
-      s.subjects.forEach(sub => {
-        subjHtml += `<tr><td>${escapeHtml(sub.subject)}</td><td><strong>${escapeHtml(sub.grade)}</strong></td><td>${escapeHtml(sub.comment || '—')}</td></tr>`;
-      });
-      subjHtml += '</table>';
-    } else {
-      subjHtml = '<p style="color:#6b85a4;">no modules recorded</p>';
-    }
-    const comm = s.teacherComments 
-      ? `<div class="teacher-comment">📌 overall comment: “${escapeHtml(s.teacherComments)}”</div>` 
-      : '<div class="teacher-comment">ℹ️ no overall comment</div>';
-    studentReportContent.innerHTML = `
-      <div style="margin-bottom:1rem;"><strong>${escapeHtml(s.name)}</strong> · ${escapeHtml(s.class)}</div>
-      ${subjHtml}
-      ${comm}
-    `;
-  }
-
-  // --- form submit ---
-  studentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const rows = document.querySelectorAll('#subjectsContainer .subject-row');
-    const subjects = [];
-    for (let row of rows) {
-      const inputs = row.querySelectorAll('input');
-      if (inputs.length >= 2) {
-        const subj = inputs[0].value.trim();
-        const grd = inputs[1].value.trim();
-        const comm = inputs[2] ? inputs[2].value.trim() : '';
-        if (subj && grd) subjects.push({ subject: subj, grade: grd, comment: comm });
-      }
-    }
-    if (!studentNameInp.value.trim() || !studentClassInp.value.trim()) {
-      alert('Please enter full name and programme');
-      return;
-    }
-    if (subjects.length === 0) {
-      alert('Add at least one module with grade');
-      return;
-    }
-
-    const doc = {
-      type: 'student',
-      name: studentNameInp.value.trim(),
-      class: studentClassInp.value.trim(),
-      teacherComments: teacherCommentsInp.value.trim() || '',
-      subjects,
-      updatedAt: new Date().toISOString()
+<script>
+    // ---------- PERSISTENT DB with COURSES & COURSEWARE ----------
+    let db = {
+        users: JSON.parse(localStorage.getItem("users")) || [{ username: "admin", password: "admin123", role: "admin" }],
+        enrollments: JSON.parse(localStorage.getItem("enrollments")) || [],
+        grades: JSON.parse(localStorage.getItem("grades")) || [],
+        courses: JSON.parse(localStorage.getItem("courses")) || [
+            "Associate of Arts",
+            "Bachelor in Business Admin",
+            "BA in Psychology",
+            "MA in Theology",
+            "Certificate in IT Support",
+            "Leadership Certificate"
+        ],
+        courseware: JSON.parse(localStorage.getItem("courseware")) || []  // each item: { id, course, title, description, addedBy }
     };
-    if (editingIdHidden.value) doc._id = editingIdHidden.value;
 
-    await db.put(doc);
-    resetForm();
-    await loadStudents();
-    reportContentDiv.innerHTML = '<p style="color:#5f7a9a;">👆 click the 📄 icon to preview</p>';
-    reportStudentNameSpan.innerText = 'select a student';
-  });
+    // Migrate old users to have fullName, email, phone, passport if missing
+    db.users = db.users.map(u => {
+        if (!u.fullName) u.fullName = '';
+        if (!u.email) u.email = '';
+        if (!u.phone) u.phone = '';
+        if (!u.passport) u.passport = null; // base64 image data
+        return u;
+    });
 
-  cancelEditBtn.addEventListener('click', resetForm);
-  addSubjectBtn.addEventListener('click', () => {
-    subjectsContainer.appendChild(createSubjectRow('', '', ''));
-  });
-
-  studentSelect.addEventListener('change', (e) => showStudentReport(e.target.value));
-
-  // tab switching (ensured)
-  function setActiveTab(active) {
-    if (active === 'admin') {
-      tabAdmin.classList.add('active');
-      tabStudent.classList.remove('active');
-      adminPortal.classList.add('active');
-      studentPortal.classList.remove('active');
-    } else {
-      tabStudent.classList.add('active');
-      tabAdmin.classList.remove('active');
-      studentPortal.classList.add('active');
-      adminPortal.classList.remove('active');
-      // when switching to student portal, refresh dropdown just in case
-      populateStudentDropdown();
-      if (students.length === 0) {
-        studentReportContent.innerHTML = '<p class="empty-state" style="padding:1rem;">🚫 No students registered yet.</p>';
-      }
+    function save() {
+        localStorage.setItem("users", JSON.stringify(db.users));
+        localStorage.setItem("enrollments", JSON.stringify(db.enrollments));
+        localStorage.setItem("grades", JSON.stringify(db.grades));
+        localStorage.setItem("courses", JSON.stringify(db.courses));
+        localStorage.setItem("courseware", JSON.stringify(db.courseware));
     }
-  }
 
-  tabAdmin.addEventListener('click', () => setActiveTab('admin'));
-  tabStudent.addEventListener('click', () => setActiveTab('student'));
+    // ---------- UI CONTROLLER ----------
+    function showSection(id) {
+        document.querySelectorAll("section").forEach(s => s.style.display = "none");
+        document.getElementById(id).style.display = "block";
+        // Clear previous messages
+        ["suMsg","stuMsg","adMsg"].forEach(m => { if(document.getElementById(m)) document.getElementById(m).innerText = ""; });
+        // if public courses section, refresh dynamic listing
+        if (id === 'courses') renderPublicCourses();
+        // hide contact success message when leaving contact
+        if (id !== 'contact') {
+            let successDiv = document.getElementById('contactSuccess');
+            if (successDiv) successDiv.classList.add('hidden');
+        }
+    }
 
-  // fireproof subscription
-  db.subscribe(async () => {
-    await loadStudents();
-  });
+    // display courses from db on public page
+    function renderPublicCourses() {
+        let container = document.getElementById("publicCoursesContainer");
+        if (!container) return;
+        let html = '';
+        db.courses.forEach(course => {
+            html += `<div class="course-card"><h3>📘 ${course}</h3><p>Comprehensive online program. Click to view details.</p><span class="badge">available</span></div>`;
+        });
+        if (html === '') html = '<p>No courses listed yet. Check back soon.</p>';
+        container.innerHTML = html;
+    }
 
-  // init
-  resetSubjectRows();
-  await loadStudents();
-  reportContentDiv.innerHTML = '<p style="color:#5f7a9a;">👆 click the 📄 icon next to a student</p>';
+    // ---------- SIGNUP (with full details) ----------
+    function signup() {
+        let fullName = document.getElementById("suFullName")?.value.trim();
+        let email = document.getElementById("suEmail")?.value.trim();
+        let phone = document.getElementById("suPhone")?.value.trim();
+        let user = document.getElementById("suUser")?.value.trim();
+        let pass = document.getElementById("suPass")?.value;
+        let msg = document.getElementById("suMsg");
+
+        if (!fullName || !email || !user || !pass) {
+            msg.innerText = "Please fill all required fields (Name, Email, Username, Password).";
+            return;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            msg.innerText = "Enter a valid email address.";
+            return;
+        }
+        if (db.users.find(u => u.username === user)) {
+            msg.innerText = "Username already exists.";
+            return;
+        }
+        // optional: check email uniqueness? we can skip.
+
+        db.users.push({
+            username: user,
+            password: pass,
+            role: "student",
+            fullName: fullName,
+            email: email,
+            phone: phone || "",
+            passport: null
+        });
+        save();
+        msg.style.color = "green";
+        msg.innerText = "Account created! You can now log in.";
+        // clear form
+        document.getElementById("suFullName").value = "";
+        document.getElementById("suEmail").value = "";
+        document.getElementById("suPhone").value = "";
+        document.getElementById("suUser").value = "";
+        document.getElementById("suPass").value = "";
+    }
+
+    // ---------- LOGIN ----------
+    function loginStudent() {
+        let user = document.getElementById("stuUser")?.value;
+        let pass = document.getElementById("stuPass")?.value;
+        let found = db.users.find(u => u.username === user && u.password === pass && u.role === "student");
+        if (found) {
+            localStorage.setItem("currentUser", JSON.stringify(found));
+            showStudentDashboard(found);
+        } else {
+            document.getElementById("stuMsg").innerText = "Invalid login";
+        }
+    }
+
+    function loginAdmin() {
+        let adUser = document.getElementById("adUser")?.value;
+        let adPass = document.getElementById("adPass")?.value;
+        let admin = db.users.find(u => u.username === adUser && u.password === adPass && u.role === "admin");
+        if (admin) {
+            localStorage.setItem("currentAdmin", JSON.stringify(admin));
+            showAdminDashboard();
+        } else {
+            document.getElementById("adMsg").innerText = "Invalid admin login";
+        }
+    }
+
+    // ---------- STUDENT DASHBOARD (with passport upload and display) ----------
+    function showStudentDashboard(user) {
+        showSection("studentDashboard");
+        let enrolled = db.enrollments.find(e => e.username === user.username);
+        let content = "<div class='card'>";
+
+        // ----- Passport section -----
+        content += "<div class='passport-container'>";
+        if (user.passport) {
+            content += `<img src="${user.passport}" alt="Passport" class="passport-image">`;
+        } else {
+            content += `<div class="passport-placeholder">No Photo</div>`;
+        }
+        content += `<div>
+            <h3>Welcome, ${user.fullName} (${user.username}) ✨</h3>`;
+        if (user.phone) content += `<p><b>Phone:</b> ${user.phone}</p>`;
+        content += `<p><b>Email:</b> ${user.email}</p>`;
+        content += `<div class="upload-btn-wrapper">
+                <button class="button small">Upload Passport</button>
+                <input type="file" accept="image/*" onchange="uploadPassport(event)">
+            </div>
+        </div></div>`;
+
+        // ----- Enrollment / Courseware section -----
+        if (!enrolled) {
+            // Build dropdown from courses
+            let options = '<option value="">-- Select a course --</option>';
+            db.courses.forEach(c => options += `<option value="${c}">${c}</option>`);
+            // Pre-fill name and email from user profile
+            content += `<h4>📝 Enrollment Form</h4>
+                <input id='fullName' placeholder='Full Legal Name' value='${user.fullName}' required><br>
+                <input id='email' placeholder='Email Address' value='${user.email}' required><br>
+                <label>Choose program:</label><br>
+                <select id='courseSelect'>${options}</select><br>
+                <button class='button' onclick='submitEnrollment()'>Submit Enrollment</button>`;
+        } else {
+            content += `<p><b>Enrollment status:</b> <span style="color:#b85c00;">${enrolled.status}</span></p>
+                <p><b>Course:</b> ${enrolled.course}</p>`;
+            let grade = db.grades.find(g => g.username === user.username);
+            if (grade) {
+                content += `<p><b>Final grade:</b> ${grade.grade} / 100</p>
+                    <button class='button' onclick='generateCertificate("${user.username}")'>📄 Download Certificate</button>`;
+            } else {
+                content += "<p><i>Grades will appear here once approved by admin.</i></p>";
+            }
+
+            // ----- Courseware for approved students only -----
+            if (enrolled.status === "Approved") {
+                // Also show payment reminder if they haven't paid? (optional)
+                content += `<div class="payment-details" style="margin-top:15px;">
+                    <h4>💳 Tuition Payment</h4>
+                    <p>If you haven't paid yet, please use our Opay account:</p>
+                    <p class="account-number" style="font-size:1.5rem;">8034212065</p>
+                    <p><strong>Account Name:</strong> Adebowale Segun Solomon</p>
+                    <p>Email receipt to finance@adeqsuccess.edu</p>
+                </div>`;
+
+                let courseMaterials = db.courseware.filter(cw => cw.course === enrolled.course);
+                if (courseMaterials.length > 0) {
+                    content += "<h4>📚 Course Materials</h4><ul class='courseware-list'>";
+                    courseMaterials.forEach(cw => {
+                        content += `<li><strong>${cw.title}</strong> 
+                            <a href="#" onclick="viewCourseware('${cw.id}')">📖 View</a> 
+                            <a href="#" onclick="downloadCourseware('${cw.id}')">⬇️ Download</a>
+                            <p style="font-size:0.9rem; color:#555;">${cw.description || ''}</p>
+                        </li>`;
+                    });
+                    content += "</ul>";
+                } else {
+                    content += "<p><i>No course materials available yet.</i></p>";
+                }
+            } else {
+                content += "<p><i>Course materials will be available once your enrollment is approved.</i></p>";
+            }
+        }
+        content += "</div>";
+        document.getElementById("studentContent").innerHTML = content;
+    }
+
+    // ---------- PASSPORT UPLOAD ----------
+    function uploadPassport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        // Check file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            alert('File size must be less than 2MB.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const dataURL = e.target.result;
+
+            // Update current user in localStorage and db
+            let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser) return;
+
+            // Update in db.users
+            const userIndex = db.users.findIndex(u => u.username === currentUser.username);
+            if (userIndex !== -1) {
+                db.users[userIndex].passport = dataURL;
+                save();
+
+                // Update currentUser in localStorage
+                currentUser.passport = dataURL;
+                localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+                // Refresh dashboard
+                showStudentDashboard(currentUser);
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // SUBMIT ENROLLMENT
+    function submitEnrollment() {
+        let user = JSON.parse(localStorage.getItem("currentUser"));
+        if (!user) { alert("Session expired, login again."); showSection("studentLogin"); return; }
+        let name = document.getElementById("fullName")?.value.trim();
+        let email = document.getElementById("email")?.value.trim();
+        let course = document.getElementById("courseSelect")?.value;
+        if (!name || !email || !course) { alert("Please fill all fields and select a course."); return; }
+        db.enrollments.push({
+            username: user.username,
+            name: name,
+            email: email,
+            course: course,
+            status: "Pending"
+        });
+        save();
+        showStudentDashboard(user);
+    }
+
+    // ---------- ADMIN DASHBOARD (with courseware management + student directory) ----------
+    function showAdminDashboard() {
+        showSection("adminDashboard");
+        // Enrollment table rows
+        let enrollRows = '';
+        db.enrollments.forEach(e => {
+            let gradeObj = db.grades.find(g => g.username === e.username);
+            enrollRows += `<tr>
+                <td>${e.username}</td><td>${e.name}</td><td>${e.course}</td><td>${e.status}</td>
+                <td><button class="button small" onclick="approveEnrollment('${e.username}')">✓ Approve</button></td>
+                <td><input id='grade_${e.username}' value='${gradeObj ? gradeObj.grade : ""}' placeholder='grade' style='width:70px; display:inline; margin:0;'>
+                <button class="button small" onclick="setGrade('${e.username}')">Save</button></td>
+            </tr>`;
+        });
+        if (enrollRows === '') enrollRows = '<tr><td colspan="6" style="text-align:center;">No enrollments yet.</td></tr>';
+
+        // Build course management UI
+        let courseItems = '';
+        db.courses.forEach((c, index) => {
+            courseItems += `<div class="course-item">
+                <span><strong>${c}</strong></span>
+                <button class="button small danger" onclick="deleteCourse(${index})">Delete</button>
+            </div>`;
+        });
+        if (courseItems === '') courseItems = '<p>No courses added. Use form below to add.</p>';
+
+        // ----- RESULTS SECTION (all grades with delete) -----
+        let resultsRows = '';
+        db.grades.forEach(g => {
+            let enrollment = db.enrollments.find(e => e.username === g.username);
+            if (enrollment) {
+                resultsRows += `<tr>
+                    <td>${enrollment.name}</td>
+                    <td>${enrollment.username}</td>
+                    <td>${enrollment.course}</td>
+                    <td><input id='grade_result_${g.username}' value='${g.grade}' class='small-input' placeholder='grade'></td>
+                    <td class="action-cell">
+                        <button class="button small" onclick="updateGradeFromResults('${g.username}')">Update</button>
+                        <button class="button small danger" onclick="deleteGrade('${g.username}')">Delete</button>
+                    </td>
+                </tr>`;
+            } else {
+                resultsRows += `<tr>
+                    <td>Unknown</td>
+                    <td>${g.username}</td>
+                    <td>—</td>
+                    <td><input id='grade_result_${g.username}' value='${g.grade}' class='small-input'></td>
+                    <td class="action-cell">
+                        <button class="button small" onclick="updateGradeFromResults('${g.username}')">Update</button>
+                        <button class="button small danger" onclick="deleteGrade('${g.username}')">Delete</button>
+                    </td>
+                </tr>`;
+            }
+        });
+        if (resultsRows === '') resultsRows = '<tr><td colspan="5" style="text-align:center;">No grades recorded yet.</td></tr>';
+
+        // ----- STUDENT DIRECTORY (all registered students) -----
+        let studentRows = '';
+        const students = db.users.filter(u => u.role === 'student');
+        students.forEach(s => {
+            // Find enrollment status if any
+            const enrollment = db.enrollments.find(e => e.username === s.username);
+            const status = enrollment ? enrollment.status : 'Not enrolled';
+            const passportHtml = s.passport ? `<img src="${s.passport}" class="thumbnail" alt="passport">` : 'None';
+            studentRows += `<tr>
+                <td>${s.username}</td>
+                <td>${s.fullName}</td>
+                <td>${s.email}</td>
+                <td>${s.phone || '—'}</td>
+                <td>${passportHtml}</td>
+                <td>${status}</td>
+            </tr>`;
+        });
+        if (studentRows === '') studentRows = '<tr><td colspan="6" style="text-align:center;">No students registered.</td></tr>';
+
+        // ----- COURSEWARE MANAGEMENT -----
+        let coursewareOptions = '';
+        db.courses.forEach(c => coursewareOptions += `<option value="${c}">${c}</option>`);
+
+        let coursewareList = '';
+        db.courseware.forEach((cw, index) => {
+            coursewareList += `<div class="course-item">
+                <span><strong>${cw.course}</strong> — ${cw.title}</span>
+                <button class="button small danger" onclick="deleteCourseware(${index})">Delete</button>
+            </div>`;
+        });
+        if (coursewareList === '') coursewareList = '<p>No course materials added.</p>';
+
+        let adminHtml = `
+            <div class="card">
+                <h3>👩‍🏫 Enrollment Management</h3>
+                <table><tr><th>User</th><th>Name</th><th>Course</th><th>Status</th><th>Approve</th><th>Grade</th></tr>${enrollRows}</table>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px;">
+                    <h3>📊 Student Results (all grades)</h3>
+                    <button class="button secondary small" onclick="downloadStudentDetailsCSV()">📥 Download All Student Details (CSV)</button>
+                </div>
+                <table>
+                    <tr><th>Student name</th><th>Username</th><th>Course</th><th>Grade</th><th>Actions</th></tr>
+                    ${resultsRows}
+                </table>
+            </div>
+            <div class="card">
+                <h3>📋 Student Directory (All Registered Students)</h3>
+                <table>
+                    <tr><th>Username</th><th>Full Name</th><th>Email</th><th>Phone</th><th>Passport</th><th>Enrollment Status</th></tr>
+                    ${studentRows}
+                </table>
+            </div>
+            <div class="admin-subsection">
+                <h3>📚 Course Catalog (admin)</h3>
+                <div id="courseList">${courseItems}</div>
+                <hr>
+                <h4>Add New Course</h4>
+                <input id="newCourseName" placeholder="e.g. Data Science Certificate" style="max-width:300px;">
+                <button class="button" onclick="addCourse()">Add Course</button>
+            </div>
+            <div class="admin-subsection">
+                <h3>📁 Courseware Management</h3>
+                <div>${coursewareList}</div>
+                <hr>
+                <h4>Add New Course Material</h4>
+                <select id="cwCourseSelect"><option value="">Select course</option>${coursewareOptions}</select>
+                <input id="cwTitle" placeholder="Title (e.g. Week 1 Lecture Notes)">
+                <textarea id="cwDescription" rows="2" placeholder="Short description (optional)"></textarea>
+                <button class="button" onclick="addCourseware()">Add Material</button>
+            </div>
+        `;
+        document.getElementById("adminContent").innerHTML = adminHtml;
+    }
+
+    // approve enrollment
+    function approveEnrollment(username) {
+        let enrollment = db.enrollments.find(e => e.username === username);
+        if (enrollment) enrollment.status = "Approved";
+        save();
+        showAdminDashboard();
+    }
+
+    // set grade from enrollment table
+    function setGrade(username) {
+        let gradeInput = document.getElementById("grade_" + username)?.value;
+        let existing = db.grades.find(g => g.username === username);
+        if (existing) existing.grade = gradeInput;
+        else db.grades.push({ username, grade: gradeInput });
+        save();
+        alert("Grade saved.");
+        showAdminDashboard();
+    }
+
+    // update grade from results table
+    function updateGradeFromResults(username) {
+        let gradeInput = document.getElementById("grade_result_" + username)?.value;
+        let existing = db.grades.find(g => g.username === username);
+        if (existing) existing.grade = gradeInput;
+        else db.grades.push({ username, grade: gradeInput });
+        save();
+        alert("Grade updated.");
+        showAdminDashboard();
+    }
+
+    // ---------- DELETE GRADE (result) ----------
+    function deleteGrade(username) {
+        if (confirm(`Delete grade for ${username}? This action cannot be undone.`)) {
+            db.grades = db.grades.filter(g => g.username !== username);
+            save();
+            showAdminDashboard();
+        }
+    }
+
+    // ---------- COURSE MANAGEMENT (admin) ----------
+    function addCourse() {
+        let newCourse = document.getElementById("newCourseName")?.value.trim();
+        if (!newCourse) { alert("Enter course name"); return; }
+        if (db.courses.includes(newCourse)) { alert("Course already exists"); return; }
+        db.courses.push(newCourse);
+        save();
+        showAdminDashboard();
+        renderPublicCourses(); // update public view if visible
+    }
+
+    function deleteCourse(index) {
+        if (confirm("Delete this course? It may affect existing enrollments (course names will remain in enrollments).")) {
+            db.courses.splice(index, 1);
+            save();
+            showAdminDashboard();
+            renderPublicCourses();
+        }
+    }
+
+    // ---------- COURSEWARE MANAGEMENT ----------
+    function addCourseware() {
+        let course = document.getElementById("cwCourseSelect")?.value;
+        let title = document.getElementById("cwTitle")?.value.trim();
+        let description = document.getElementById("cwDescription")?.value.trim();
+        if (!course || !title) { alert("Please select a course and enter a title."); return; }
+        let newItem = {
+            id: Date.now() + Math.random().toString(36).substr(2, 5),
+            course: course,
+            title: title,
+            description: description || '',
+            addedBy: "admin"
+        };
+        db.courseware.push(newItem);
+        save();
+        showAdminDashboard();
+    }
+
+    function deleteCourseware(index) {
+        if (confirm("Delete this course material?")) {
+            db.courseware.splice(index, 1);
+            save();
+            showAdminDashboard();
+        }
+    }
+
+    // ---------- VIEW / DOWNLOAD COURSEWARE (simulated) ----------
+    function viewCourseware(id) {
+        let item = db.courseware.find(cw => cw.id == id);
+        if (!item) return;
+        alert(`Viewing: ${item.title}\nDescription: ${item.description}\n(Simulated – in a real system this would open a PDF or page.)`);
+    }
+
+    function downloadCourseware(id) {
+        let item = db.courseware.find(cw => cw.id == id);
+        if (!item) return;
+        alert(`Download started for: ${item.title}\n(Simulated – in a real system this would download a file.)`);
+    }
+
+    // ---------- EXPORT STUDENT DETAILS (CSV) ----------
+    function downloadStudentDetailsCSV() {
+        // Headers: Username, Full Name, Email, Course, Enrollment Status, Grade
+        let csvRows = [];
+        csvRows.push(['Username', 'Full Name', 'Email', 'Course', 'Enrollment Status', 'Grade'].join(','));
+
+        db.enrollments.forEach(enroll => {
+            let gradeObj = db.grades.find(g => g.username === enroll.username);
+            let grade = gradeObj ? gradeObj.grade : '';
+            let row = [
+                `"${enroll.username}"`,
+                `"${enroll.name}"`,
+                `"${enroll.email}"`,
+                `"${enroll.course}"`,
+                `"${enroll.status}"`,
+                `"${grade}"`
+            ];
+            csvRows.push(row.join(','));
+        });
+
+        let csvString = csvRows.join('\n');
+        let blob = new Blob([csvString], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'student_details.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }
+
+    // ---------- CERTIFICATE ----------
+    function generateCertificate(username) {
+        let user = db.enrollments.find(e => e.username === username);
+        let grade = db.grades.find(g => g.username === username);
+        if (!user || !grade) { alert("Incomplete data."); return; }
+        let win = window.open("", "_blank");
+        win.document.write(`
+            <style>body{font-family:Georgia,serif; padding:40px; text-align:center;}</style>
+            <h2 style="color:#0a2a43;">🎓 Certificate of Completion</h2>
+            <p style="font-size:1.2rem;">This certifies that</p>
+            <h3>${user.name}</h3>
+            <p>has successfully completed the course</p>
+            <h3>${user.course}</h3>
+            <p>with a final grade of <strong>${grade.grade}%</strong></p>
+            <p>Awarded on ${new Date().toLocaleDateString()}</p>
+            <p style="margin-top:40px;"><em>Adequate Success Online College</em></p>
+        `);
+        win.print();
+        win.close();
+    }
+
+    // ---------- NETLIFY CONTACT FORM (AJAX submission) ----------
+    const contactForm = document.getElementById('netlifyContact');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // no page reload
+            const formData = new FormData(contactForm);
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+                if (response.ok) {
+                    document.getElementById('contactSuccess').classList.remove('hidden');
+                    contactForm.reset();
+                } else {
+                    alert('Oops! Something went wrong. Please try again later.');
+                }
+            } catch (error) {
+                alert('Network error – please check your connection.');
+            }
+        });
+    }
+
+    // ---------- LOGOUT ----------
+    function logout() {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("currentAdmin");
+        showSection("home");
+    }
+
+    // ---------- AUTO-RESTORE SESSION & INIT ----------
+    window.onload = function() {
+        let currentUser = localStorage.getItem("currentUser");
+        let currentAdmin = localStorage.getItem("currentAdmin");
+        if (currentUser) {
+            try {
+                let u = JSON.parse(currentUser);
+                showStudentDashboard(u);
+            } catch { }
+        } else if (currentAdmin) {
+            showAdminDashboard();
+        } else {
+            renderPublicCourses();
+        }
+    };
 </script>
+<!-- All necessary information: accreditation, faculty, tuition, contact, courses, faith-based mission, full enrollment system with localStorage. -->
+<!-- Admin can add/delete courses & courseware; students select from official list. -->
+<!-- Contact form uses Netlify (detected via data-netlify) and submits via AJAX with success message. -->
+<!-- Admin has "Student Results" table with inline grade editing and delete button for each result. -->
+<!-- Added "Download All Student Details (CSV)" button in admin results card. -->
+<!-- Student signup collects full name, email, phone; these pre-fill the enrollment form. -->
+<!-- Courseware system: admin can add materials per course; approved students see them in dashboard. -->
+<!-- Opay payment account 8034212065 with name Adrbowale Segun Solomon displayed on Tuition page and student dashboard. -->
+<!-- Students can upload passport photo on their dashboard, stored as base64 in their profile. -->
+<!-- Admin now has a "Student Directory" card showing all registered students with their details and passport thumbnails. -->
 </body>
 </html>
