@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adequate Success Online College</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+}
+
+header {
+    background: #0a2a43;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 12px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+section {
+    display: none;
+    padding: 40px 20px;
+}
+
+.hero {
+    background: linear-gradient(to right, #0a2a43, #145374);
+    color: white;
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.button {
+    background: #ff9800;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+input, select {
+    padding: 10px;
+    margin: 8px 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+footer {
+    background: #0a2a43;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Adequate Success Online College</h1>
+<nav>
+<a onclick="showSection('home')">Home</a>
+<a onclick="showSection('courses')">Courses</a>
+<a onclick="showSection('enroll')">Enroll</a>
+<a onclick="showSection('signup')">Sign Up</a>
+<a onclick="showSection('login')">Login</a>
+</nav>
+</header>
+
+<!-- HOME -->
+<section id="home" style="display:block;">
+<div class="hero">
+<h2>Empowering Lives Through Faith & Education</h2>
+<p>Raising Leaders for Kingdom Impact</p>
+</div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+<h2>Available Courses</h2>
+<div id="coursesContainer"></div>
+</section>
+
+<!-- ENROLL -->
+<section id="enroll">
+<h2>Student Enrollment</h2>
+<input type="text" id="studentName" placeholder="Full Name">
+<select id="courseSelect"></select>
+<button class="button" onclick="enrollStudent()">Enroll</button>
+<p id="enrollMessage"></p>
+</section>
+
+<!-- SIGNUP -->
+<section id="signup">
+<h2>Create Account</h2>
+<input type="text" id="newUsername" placeholder="Username">
+<input type="password" id="newPassword" placeholder="Password">
+<select id="role">
+<option value="student">Student</option>
+<option value="admin">Admin</option>
+</select>
+<button class="button" onclick="signup()">Sign Up</button>
+<p id="signupMessage"></p>
+</section>
+
+<!-- LOGIN -->
+<section id="login">
+<h2>Login</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button class="button" onclick="login()">Login</button>
+<p id="loginMessage"></p>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+<h2>Dashboard</h2>
+<div id="dashboardContent"></div>
+<button class="button" onclick="logout()">Logout</button>
+</section>
+
+<footer>
+© 2026 Adequate Success Online College
+</footer>
+
+<script>
+
+/* =========================
+DATABASE (Fireproof Course)
+========================= */
+
+const database = {
+courses: [
+{
+id: 1,
+title: "Fireproof Marriage & Family Course",
+description: "6-week transformational marriage restoration program.",
+duration: "6 Weeks",
+level: "Beginner"
+}
+],
+users: JSON.parse(localStorage.getItem("users")) || [
+{ username: "admin", password: "admin123", role: "admin" }
+],
+enrollments: JSON.parse(localStorage.getItem("enrollments")) || []
+};
+
+/* =========================
+NAVIGATION
+========================= */
+
+function showSection(id) {
+document.querySelectorAll("section").forEach(s => s.style.display = "none");
+document.getElementById(id).style.display = "block";
+}
+
+/* =========================
+LOAD COURSES
+========================= */
+
+const courseContainer = document.getElementById("coursesContainer");
+const courseSelect = document.getElementById("courseSelect");
+
+database.courses.forEach(course => {
+courseContainer.innerHTML += `
+<div class="card">
+<h3>${course.title}</h3>
+<p>${course.description}</p>
+<p><strong>Duration:</strong> ${course.duration}</p>
+<p><strong>Level:</strong> ${course.level}</p>
+</div>
+`;
+courseSelect.innerHTML += `<option value="${course.title}">${course.title}</option>`;
+});
+
+/* =========================
+SIGNUP
+========================= */
+
+function signup() {
+const username = newUsername.value;
+const password = newPassword.value;
+const role = document.getElementById("role").value;
+
+if(!username || !password) {
+signupMessage.innerText = "Fill all fields.";
+return;
+}
+
+database.users.push({ username, password, role });
+localStorage.setItem("users", JSON.stringify(database.users));
+signupMessage.innerText = "Account created successfully!";
+}
+
+/* =========================
+LOGIN
+========================= */
+
+function login() {
+const user = database.users.find(u =>
+u.username === username.value && u.password === password.value
+);
+
+if(user) {
+localStorage.setItem("loggedInUser", JSON.stringify(user));
+loadDashboard(user);
+showSection("dashboard");
+} else {
+loginMessage.innerText = "Invalid credentials.";
+}
+}
+
+/* =========================
+DASHBOARD
+========================= */
+
+function loadDashboard(user) {
+if(user.role === "admin") {
+dashboardContent.innerHTML = `
+<div class="card">
+<h3>Admin Panel</h3>
+<p>Total Students: ${database.enrollments.length}</p>
+</div>
+`;
+} else {
+const myEnrollments = database.enrollments.filter(e => e.username === user.username);
+dashboardContent.innerHTML = `
+<div class="card">
+<h3>Welcome ${user.username}</h3>
+<p>Your Enrollments:</p>
+${myEnrollments.map(e => `<p>${e.course}</p>`).join("")}
+</div>
+`;
+}
+}
+
+/* =========================
+ENROLLMENT
+========================= */
+
+function enrollStudent() {
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+if(!user) {
+enrollMessage.innerText = "Login first.";
+return;
+}
+
+database.enrollments.push({
+username: user.username,
+name: studentName.value,
+course: courseSelect.value
+});
+
+localStorage.setItem("enrollments", JSON.stringify(database.enrollments));
+enrollMessage.innerText = "Enrollment successful!";
+}
+
+/* =========================
+LOGOUT
+========================= */
+
+function logout() {
+localStorage.removeItem("loggedInUser");
+showSection("home");
+}
+
+</script>
+
+</body>
+</html>
