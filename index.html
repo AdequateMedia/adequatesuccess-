@@ -81,6 +81,8 @@
         <a onclick="showSection('signup')">Sign Up</a>
         <a onclick="showSection('studentLogin')">Student Login</a>
         <a onclick="showSection('adminLogin')">Admin Login</a>
+        <!-- new share button -->
+        <a onclick="shareSite()">📤 Share</a>
     </nav>
 </header>
 
@@ -788,6 +790,33 @@
         win.close();
     }
 
+    // ---------- SHARE FUNCTION (Web Share API) ----------
+    function shareSite() {
+        const shareData = {
+            title: 'Adequate Success Online College',
+            text: 'Explore affordable, faith‑based accredited online programs. Flexible schedules, values‑driven education.',
+            url: window.location.href
+        };
+        if (navigator.share) {
+            navigator.share(shareData)
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.log('Error sharing:', error));
+        } else {
+            // Fallback: prompt to copy link
+            const textarea = document.createElement('textarea');
+            textarea.value = window.location.href;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Link copied to clipboard! You can share it manually.');
+            } catch (err) {
+                alert('Your browser does not support sharing. You can copy the URL from the address bar.');
+            }
+            document.body.removeChild(textarea);
+        }
+    }
+
     // ---------- NETLIFY CONTACT FORM (AJAX submission) ----------
     const contactForm = document.getElementById('netlifyContact');
     if (contactForm) {
@@ -847,5 +876,6 @@
 <!-- Admin now has a "Student Directory" card showing all registered students with their details and passport thumbnails. -->
 <!-- Management team updated: Solomon Daniel VC, Deborah Solomon Director of Dean, Adebowale Segun Dean of Faculty, Adebowale Daniel Admin, Funmilayo Adebowale Registrar. -->
 <!-- Course list updated to include AI, Excel, MS Office, Web Design, and related programs. -->
+<!-- Added "Share" button in navigation that uses Web Share API (with fallback copy link) -->
 </body>
 </html>
