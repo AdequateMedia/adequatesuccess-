@@ -108,13 +108,13 @@
         <p><strong>Mission:</strong> To equip learners with skills, integrity, and hope through flexible online programs rooted in excellence and faith.</p>
         <p><strong>Vision:</strong> A world where quality education is within everyone's reach, fostering community and transformation.</p>
         <hr>
-        <h3>Our Faculty</h3>
+        <h3>Our Management Team</h3>
         <div class="grid-3">
-            <div><strong>Dr. Sarah Benson</strong> — Theology & Ethics (PhD, Notre Dame)</div>
-            <div><strong>Prof. Mark Chen</strong> — Business & Leadership (MBA, Wharton)</div>
-            <div><strong>Dr. Lisa Ray</strong> — Education & Psychology (EdD, Columbia)</div>
-            <div><strong>Rev. James Carter</strong> — Pastoral Studies (MDiv, Fuller)</div>
-            <div><strong>Dr. Amina Yusuf</strong> — Computer Science (PhD, MIT)</div>
+            <div><strong>Solomon Daniel</strong> — Vice Chancellor (VC)</div>
+            <div><strong>Deborah Solomon</strong> — Director of Dean</div>
+            <div><strong>Adebowale Segun</strong> — Dean of Faculty</div>
+            <div><strong>Adebowale Daniel</strong> — Admin</div>
+            <div><strong>Funmilayo Adebowale</strong> — Registrar</div>
         </div>
     </div>
 </section>
@@ -128,14 +128,14 @@
 
 <!-- ========== TUITION with OPAY PAYMENT DETAILS ========== -->
 <section id="tuition">
-    <h2>Affordable Tuition & Financial Aid</h2>
+    <h2>100% free online Program</h2>
     <div class="card">
         <table>
             <tr><th>Program</th><th>Cost per credit</th><th>Estimated total</th></tr>
-            <tr><td>Associate / Bachelor's</td><td>$350</td><td>$21,000 (BA, 120cr)</td></tr>
-            <tr><td>Master's programs</td><td>$495</td><td>$17,820 (MA, 36cr)</td></tr>
-            <tr><td>Certificates</td><td>$300</td><td>$5,400 (18cr)</td></tr>
-            <tr><td colspan="3"><small>* Textbook fees ~$200/course. Military & ministry discounts available.</small></td></tr>
+            <tr><td>Associate / Bachelor's</td><td>$0</td><td>$0 (BA, 120cr)</td></tr>
+            <tr><td>Master's programs</td><td>$0</td><td>$0(MA, 36cr)</td></tr>
+            <tr><td>Certificates</td><td>$0</td><td>$0 (18cr)</td></tr>
+            <tr><td colspan="3"><small>* Textbook fees ~$5/course. Military & ministry discounts available.</small></td></tr>
         </table>
         <p style="margin-top:30px;">📌 80% of students receive grants or scholarships. FAFSA code: 012345. Monthly payment plans.</p>
         <button class="button" onclick="showSection('contact')">Ask about financial aid</button>
@@ -148,10 +148,10 @@
         <div style="background: white; padding: 20px; border-radius: 20px; text-align: center;">
             <p style="font-size: 1.2rem; margin-bottom: 5px;">Opay Account Number</p>
             <div class="account-number">8034212065</div>
-            <p style="margin-top: 10px;"><strong>Account Name:</strong> Adebowale Segun Solomon</p>
+            <p style="margin-top: 10px;"><strong>Account Name:</strong> Adrbowale Segun Solomon</p>
             <p><strong>Bank:</strong> Opay Digital Services</p>
         </div>
-        <p style="margin-top: 15px;">After payment, please email your receipt to <strong>finance@adeqsuccess.edu</strong> with your full name and student ID (if available).</p>
+        <p style="margin-top: 15px;">After payment, please email your receipt to <strong>finance@adequatesuccess.edu@gmail.com</strong> with your full name and student ID (if available).</p>
     </div>
 </section>
 
@@ -161,9 +161,9 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         <div class="card">
             <h3>📬 Contact info</h3>
-            <p>📍Ekiti<br>Nigeria</p>
-            <p>📞 (234) 8034212065 (Mon–Fri, 9am–7pm ET)</p>
-            <p>📧 admissions@ http://adeqsuccess.edu.netlify.app</p>
+            <p>📍 1221 Success Blvd, Suite 200<br>   Orlando, FL 32801</p>
+          <p>📞 (234) 9075614458 (Mon–Fri, 9am–7pm ET)</p>
+            <p>📧 admissions@adeqsuccess.edu</p>
             <p>🌐 social: @AdequateSuccess (LinkedIn, Twitter)</p>
         </div>
         <div class="card">
@@ -236,13 +236,18 @@
         users: JSON.parse(localStorage.getItem("users")) || [{ username: "admin", password: "admin123", role: "admin" }],
         enrollments: JSON.parse(localStorage.getItem("enrollments")) || [],
         grades: JSON.parse(localStorage.getItem("grades")) || [],
+        // Updated courses: AI, Excel, MS, Web Design
         courses: JSON.parse(localStorage.getItem("courses")) || [
-            "Associate of Arts",
-            "Bachelor in Business Admin",
-            "BA in Psychology",
-            "MA in Theology",
-            "Certificate in IT Support",
-            "Leadership Certificate"
+            "Introduction to Artificial Intelligence",
+            "Machine Learning Fundamentals",
+            "Deep Learning & Neural Networks",
+            "AI for Business",
+            "Microsoft Excel (Basic to Advanced)",
+            "Microsoft Office Suite",
+            "Web Design (HTML, CSS, JavaScript)",
+            "Advanced Web Development",
+            "Data Science with Python",
+            "Natural Language Processing"
         ],
         courseware: JSON.parse(localStorage.getItem("courseware")) || []  // each item: { id, course, title, description, addedBy }
     };
@@ -384,7 +389,7 @@
 
         // ----- Enrollment / Courseware section -----
         if (!enrolled) {
-            // Build dropdown from courses
+            // Build dropdown from updated courses
             let options = '<option value="">-- Select a course --</option>';
             db.courses.forEach(c => options += `<option value="${c}">${c}</option>`);
             // Pre-fill name and email from user profile
@@ -412,7 +417,7 @@
                     <h4>💳 Tuition Payment</h4>
                     <p>If you haven't paid yet, please use our Opay account:</p>
                     <p class="account-number" style="font-size:1.5rem;">8034212065</p>
-                    <p><strong>Account Name:</strong> Adebowale Segun Solomon</p>
+                    <p><strong>Account Name:</strong> Adrbowale Segun Solomon</p>
                     <p>Email receipt to finance@adeqsuccess.edu</p>
                 </div>`;
 
@@ -614,7 +619,7 @@
                 <div id="courseList">${courseItems}</div>
                 <hr>
                 <h4>Add New Course</h4>
-                <input id="newCourseName" placeholder="e.g. Data Science Certificate" style="max-width:300px;">
+                <input id="newCourseName" placeholder="e.g. Generative AI" style="max-width:300px;">
                 <button class="button" onclick="addCourse()">Add Course</button>
             </div>
             <div class="admin-subsection">
@@ -840,5 +845,7 @@
 <!-- Opay payment account 8034212065 with name Adrbowale Segun Solomon displayed on Tuition page and student dashboard. -->
 <!-- Students can upload passport photo on their dashboard, stored as base64 in their profile. -->
 <!-- Admin now has a "Student Directory" card showing all registered students with their details and passport thumbnails. -->
+<!-- Management team updated: Solomon Daniel VC, Deborah Solomon Director of Dean, Adebowale Segun Dean of Faculty, Adebowale Daniel Admin, Funmilayo Adebowale Registrar. -->
+<!-- Course list updated to include AI, Excel, MS Office, Web Design, and related programs. -->
 </body>
 </html>
